@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-title-in-document-head */
 /* eslint-disable @next/next/no-document-import-in-page */
 import React from "react";
 import {ColorModeScript} from "@chakra-ui/react";
@@ -7,7 +8,9 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          <title>JustPayys</title>
+        </Head>
         <body>
           <ColorModeScript initialColorMode="dark" />
           <Main />
