@@ -1,9 +1,9 @@
 import React from "react";
-import {Box, Flex, Button} from "@chakra-ui/react";
-import {IoReceiptOutline} from "react-icons/io5";
+import {Box, Flex} from "@chakra-ui/react";
 
 import Header from "@components/Header";
 import Footer from "@components/Footer";
+import AddExpenseModal from "@components/AddExpenseModal";
 
 const Layout: React.FC = ({children}) => {
   return (
@@ -11,15 +11,7 @@ const Layout: React.FC = ({children}) => {
       <Header />
       <Box as="main" flex={1} p={5} pb={0} position="relative">
         {children}
-        <Button
-          bottom={3}
-          colorScheme="purple"
-          leftIcon={<IoReceiptOutline />}
-          position="absolute"
-          right={5}
-        >
-          Add expense
-        </Button>
+        <AddExpenseModal />
       </Box>
       <Footer />
     </Flex>
