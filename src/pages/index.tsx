@@ -22,7 +22,7 @@ const Home: NextPage = () => {
               $45.25
             </Text>
           </Text>
-          <Button colorScheme="purple" leftIcon={<AiOutlineUsergroupAdd />} variant="outline">
+          <Button leftIcon={<AiOutlineUsergroupAdd />} variant="outline">
             Create new group
           </Button>
         </Stack>

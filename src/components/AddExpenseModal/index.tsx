@@ -123,7 +123,14 @@ const AddExpenseModal = () => {
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={onClose}>Close</Button>
+            <Stack direction="row">
+              <Button colorScheme="red" variant="outline" onClick={onClose}>
+                Close
+              </Button>
+              <Button w="100px" onClick={onClose}>
+                Save
+              </Button>
+            </Stack>
           </ModalFooter>
         </ModalContent>
       </Modal>
