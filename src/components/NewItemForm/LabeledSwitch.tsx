@@ -3,27 +3,28 @@ import {
   FormControl,
   FormLabel,
   Switch,
+  SwitchProps,
   Popover,
   PopoverTrigger,
   PopoverContent,
-  IconButton,
+  Icon,
 } from "@chakra-ui/react";
 import {BsInfoCircle} from "react-icons/bs";
 
-interface Props {
+interface Props extends SwitchProps {
   label: string;
   children: string;
 }
 
-const LabeledSwitch = ({label, children: description}: Props) => (
+const LabeledSwitch = ({label, children: description, ...rest}: Props) => (
   <FormControl alignItems="center" display="flex">
     <FormLabel fontSize="sm" htmlFor={label} mb="0">
       {label}
     </FormLabel>
-    <Switch colorScheme="purple" id={label} pr={3} />
+    <Switch colorScheme="purple" id={label} pr={3} {...rest} />
     <Popover isLazy>
       <PopoverTrigger>
-        <IconButton aria-label="What is this?" icon={<BsInfoCircle />} variant="unstyled" />
+        <Icon aria-label="What is this?" as={BsInfoCircle} cursor="pointer" />
       </PopoverTrigger>
       <PopoverContent bg="gray.600" maxW="60vw" p={2}>
         {description}

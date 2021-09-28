@@ -1,6 +1,7 @@
-import React, {ReactElement, FC, MouseEventHandler} from "react";
-import {Stack, Button, useDisclosure, Collapse} from "@chakra-ui/react";
+import React, {ReactElement, FC, MouseEventHandler, MouseEvent} from "react";
+import {Stack, Button, useDisclosure, Collapse, Text, useToast, Icon} from "@chakra-ui/react";
 import {IconType} from "react-icons";
+import {BiErrorAlt} from "react-icons/bi";
 
 export {LabeledSwitch} from "./LabeledSwitch";
 
@@ -8,15 +9,36 @@ interface Props {
   doneMessage: string;
   openMessage: string;
   btnIcon: ReactElement<IconType>;
-  handleSubmit: MouseEventHandler<HTMLButtonElement>;
+  onSubmit: (event: MouseEvent<HTMLButtonElement>) => Promise<void>;
 }
 
-const NewItemForm: FC<Props> = ({btnIcon, children, openMessage, handleSubmit, doneMessage}) => {
+const NewItemForm: FC<Props> = ({btnIcon, children, openMessage, onSubmit, doneMessage}) => {
   const {isOpen, onOpen, onClose} = useDisclosure();
+  const toast = useToast();
 
-  const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
-    onClose();
-    handleSubmit(event);
+  const handleClick: MouseEventHandler<HTMLButtonElement> = async (event) => {
+    try {
+      await onSubmit(event);
+      onClose();
+    } catch ({message}) {
+      toast({
+        render: () => (
+          <Stack
+            align="center"
+            bg="gray.700"
+            border="2px solid"
+            borderColor="red.400"
+            color="white"
+            direction="row"
+            p={2}
+            rounded="md"
+          >
+            <Icon as={BiErrorAlt} boxSize={5} color="red.400" />
+            <Text fontWeight={500}>{message as string}</Text>
+          </Stack>
+        ),
+      });
+    }
   };
 
   return (
