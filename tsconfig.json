@@ -10,6 +10,7 @@
       "@components/*": ["components/*"],
       "@contexts/*": ["contexts/*"],
       "@contexts": ["contexts"],
+      "@utils": ["utils"],
       "@pages/*": ["pages/*"]
     },
     "forceConsistentCasingInFileNames": true,

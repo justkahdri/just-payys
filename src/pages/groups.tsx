@@ -16,6 +16,7 @@ import Layout from "@components/Layout";
 import NewItemForm, {LabeledSwitch} from "@components/NewItemForm";
 import {ListedGroup} from "@components/ListedItem";
 import {GroupsContext, PeopleContext} from "@contexts";
+import {CustomError} from "@utils";
 
 const GroupsPage: NextPage = () => {
   const {groups} = useContext(GroupsContext);
@@ -45,12 +46,19 @@ const GroupsForm = () => {
   const handleSubmit = async () => {
     if (groupName) {
       if (members.length >= 2) {
+        // Add to context
         addGroup(groupName, simplified, members as string[]);
+        // Resets inputs
+        setGroupName("");
+        setMembers([]);
       } else {
-        throw new Error("Select at least two members for the new group.");
+        throw new CustomError(
+          "Not enough members.",
+          "Select at least two members for the new group.",
+        );
       }
     } else {
-      throw new Error("A group's name is required.");
+      throw new CustomError("A name is required.", "Please enter a name for the new group.");
     }
   };
 
@@ -58,11 +66,12 @@ const GroupsForm = () => {
     <NewItemForm
       btnIcon={<AiOutlineUsergroupAdd />}
       doneMessage="Add members"
+      isDisabled={people.length < 2}
       openMessage="Create new group"
       onSubmit={handleSubmit}
     >
       <Stack align="center" direction="row">
-        <Avatar name={groupName} src="https://bit.ly/tioluwani-kolawole" />
+        <Avatar name={groupName} src="https://bit.ly/broken-url" />
         <Input
           placeholder="Group's name"
           value={groupName}

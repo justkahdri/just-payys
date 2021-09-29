@@ -1,37 +1,35 @@
 declare global {
-  // MAIN TYPES
-  interface PersonT {
-    id: string;
+  // PERSON
+  interface NewPerson {
+    id?: string;
     name: string;
-    notes: string;
+    notes?: string;
+  }
+
+  interface PersonT extends NewPerson {
+    id: string;
     related_expenses: string[];
     groups: string[];
   }
 
-  interface GroupT {
-    id: string;
-    name: string;
-    simplified_debts: boolean;
-    members: string[];
-    related_expenses: string[];
-  }
-
-  interface ExpenseT {
-    id: string;
-    description: string;
-    cost: number;
-    payed_by: string;
-    group_id: string;
-    participants: string[];
-    divided: "equal" | "custom";
-  }
-
-  // CONTEXT TYPES
   interface PeopleContextState {
     people: PersonT[];
     addPerson: (name: string, notes?: string) => void;
     removePerson: (person_id: string) => void;
     getPersonById: (person_id: string) => PersonT | undefined;
+  }
+
+  // GROUP OF PEOPLE
+  interface NewGroup {
+    id?: string;
+    name: string;
+    simplified_debts: boolean;
+    members: string[];
+  }
+
+  interface GroupT extends NewGroup {
+    id: string;
+    related_expenses: string[];
   }
 
   interface GroupsContextState {
@@ -40,9 +38,24 @@ declare global {
     removeGroup: (group_id: string) => void;
   }
 
+  // EXPENSE
+  interface NewExpense {
+    id?: string;
+    description: string;
+    cost: number;
+    payed_by: string;
+    group_id: string;
+    participants: string[];
+    divided: "equal" | "custom";
+  }
+
+  interface ExpenseT extends NewExpense {
+    id: string;
+  }
+
   interface ExpensesContextState {
     expenses: ExpenseT[];
-    addExpense: (expense: Expense) => void;
+    addExpense: (expense: NewExpense) => void;
     removeExpense: (expense_id: string) => void;
   }
 }

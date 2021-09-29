@@ -1,7 +1,6 @@
 import React, {ReactElement, FC, MouseEventHandler, MouseEvent} from "react";
-import {Stack, Button, useDisclosure, Collapse, Text, useToast, Icon} from "@chakra-ui/react";
+import {Stack, Button, useDisclosure, Collapse, useToast} from "@chakra-ui/react";
 import {IconType} from "react-icons";
-import {BiErrorAlt} from "react-icons/bi";
 
 export {LabeledSwitch} from "./LabeledSwitch";
 
@@ -10,9 +9,11 @@ interface Props {
   openMessage: string;
   btnIcon: ReactElement<IconType>;
   onSubmit: (event: MouseEvent<HTMLButtonElement>) => Promise<void>;
+  isDisabled?: boolean;
 }
 
-const NewItemForm: FC<Props> = ({btnIcon, children, openMessage, onSubmit, doneMessage}) => {
+const NewItemForm: FC<Props> = (props) => {
+  const {btnIcon, children, openMessage, onSubmit, doneMessage, isDisabled = false} = props;
   const {isOpen, onOpen, onClose} = useDisclosure();
   const toast = useToast();
 
@@ -20,23 +21,12 @@ const NewItemForm: FC<Props> = ({btnIcon, children, openMessage, onSubmit, doneM
     try {
       await onSubmit(event);
       onClose();
-    } catch ({message}) {
+    } catch ({message, name}) {
       toast({
-        render: () => (
-          <Stack
-            align="center"
-            bg="gray.700"
-            border="2px solid"
-            borderColor="red.400"
-            color="white"
-            direction="row"
-            p={2}
-            rounded="md"
-          >
-            <Icon as={BiErrorAlt} boxSize={5} color="red.400" />
-            <Text fontWeight={500}>{message as string}</Text>
-          </Stack>
-        ),
+        description: message as string,
+        title: name as string,
+        status: "error",
+        isClosable: true,
       });
     }
   };
@@ -68,7 +58,7 @@ const NewItemForm: FC<Props> = ({btnIcon, children, openMessage, onSubmit, doneM
             >
               Cancel
             </Button>
-            <Button flex={1} maxW="150px" size="sm" onClick={handleClick}>
+            <Button flex={1} isDisabled={isDisabled} maxW="150px" size="sm" onClick={handleClick}>
               {doneMessage}
             </Button>
           </Stack>
