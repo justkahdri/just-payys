@@ -17,8 +17,18 @@ const Footer = () => {
   ];
 
   return (
-    // eslint-disable-next-line react/jsx-sort-props
-    <Flex as="footer" borderTop="1px solid" borderColor="gray.700" justify="space-evenly" p={3}>
+    <Flex
+      as="footer"
+      bg="gray.800"
+      borderTop="1px solid"
+      // eslint-disable-next-line react/jsx-sort-props
+      borderColor="gray.700"
+      bottom={0}
+      justify="space-evenly"
+      p={3}
+      position="sticky"
+      width="100%"
+    >
       {links.map((link) => (
         <Link key={link.title} href={link.route}>
           <a>

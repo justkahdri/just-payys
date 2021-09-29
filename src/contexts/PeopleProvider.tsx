@@ -9,6 +9,9 @@ const contextDefaultValues: PeopleContextState = {
   removePerson: () => {
     throw new Error("removePerson not implemented in PeopleContext");
   },
+  getPersonById: () => {
+    throw new Error("getPersonById not implemented in PeopleContext");
+  },
 };
 
 export const PeopleContext = createContext<PeopleContextState>(contextDefaultValues);
@@ -23,6 +26,7 @@ const PeopleProvider: FC = ({children}) => {
   };
 
   const removePerson = (id: string) => setPeople((people) => people.filter((p) => p.id !== id));
+  const getPersonById = (id: string) => people.find((p) => p.id == id);
 
   return (
     <PeopleContext.Provider
@@ -30,6 +34,7 @@ const PeopleProvider: FC = ({children}) => {
         people,
         addPerson,
         removePerson,
+        getPersonById,
       }}
     >
       {children}

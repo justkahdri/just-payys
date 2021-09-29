@@ -55,7 +55,7 @@ const NewItemForm: FC<Props> = ({btnIcon, children, openMessage, onSubmit, doneM
         </Button>
       </Collapse>
       <Collapse animateOpacity in={isOpen}>
-        <Stack bg="gray.700" p={3} rounded="md" shadow="md">
+        <Stack bg="gray.700" mb="50px" p={3} rounded="md" shadow="md">
           {children}
           <Stack direction="row" justify={["center", "end"]}>
             <Button

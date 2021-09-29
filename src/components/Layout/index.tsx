@@ -9,7 +9,7 @@ const Layout: React.FC = ({children}) => {
   return (
     <Flex direction="column" minH="100vh">
       <Header />
-      <Box as="main" flex={1} p={5} pb={0} position="relative">
+      <Box as="main" flex={1} p={5} position="relative">
         {children}
         <AddExpenseModal />
       </Box>

@@ -31,11 +31,12 @@ declare global {
     people: PersonT[];
     addPerson: (name: string, notes?: string) => void;
     removePerson: (person_id: string) => void;
+    getPersonById: (person_id: string) => PersonT | undefined;
   }
 
   interface GroupsContextState {
     groups: GroupT[];
-    addGroup: (name: string, simplified_debts: boolean) => void;
+    addGroup: (name: string, simplified_debts: boolean, members: string[]) => void;
     removeGroup: (group_id: string) => void;
   }
 

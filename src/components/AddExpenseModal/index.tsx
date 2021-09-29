@@ -47,11 +47,11 @@ const AddExpenseModal = () => {
   return (
     <>
       <Button
-        bottom={3}
+        bottom="60px"
         colorScheme="purple"
         leftIcon={<IoReceiptOutline />}
-        position="absolute"
-        right={5}
+        position="fixed"
+        right={3}
         onClick={onOpen}
       >
         Add expense

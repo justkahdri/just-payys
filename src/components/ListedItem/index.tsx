@@ -1,6 +1,8 @@
-import React, {FC} from "react";
+import React, {FC, useContext} from "react";
 import {Stack, Avatar, Heading, Text, Flex, LinkBox} from "@chakra-ui/react";
 import {default as NextLink} from "next/link";
+
+import {PeopleContext} from "@contexts";
 
 interface Props {
   name: string;
@@ -37,12 +39,21 @@ const ListedItem: FC<Props> = ({name, id, balance, children}) => (
 
 export const ListedPerson = (props: PersonT) => <ListedItem balance={32.2} {...props} />;
 
-export const ListedGroup = (props: GroupT) => (
-  <ListedItem balance={-12.43} {...props}>
-    <Text color="green.500" fontSize="xs">
-      You and {props.members.length - 1} more
-    </Text>
-  </ListedItem>
-);
+export const ListedGroup = (props: GroupT) => {
+  const {getPersonById} = useContext(PeopleContext);
+  const memeberName = getPersonById(props.members[0])?.name;
+  const ending =
+    props.members.length > 2
+      ? `${props.members.length - 1} more`
+      : getPersonById(props.members[1])?.name;
+
+  return (
+    <ListedItem balance={-12.43} {...props}>
+      <Text color="green.500" fontSize="xs">
+        {memeberName} and {ending}
+      </Text>
+    </ListedItem>
+  );
+};
 
 export default ListedItem;
