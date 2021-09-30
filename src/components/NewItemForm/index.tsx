@@ -3,6 +3,7 @@ import {Stack, Button, useDisclosure, Collapse, useToast} from "@chakra-ui/react
 import {IconType} from "react-icons";
 
 export {LabeledSwitch} from "./LabeledSwitch";
+import {parseError} from "@utils";
 
 interface Props {
   doneMessage: string;
@@ -17,18 +18,11 @@ const NewItemForm: FC<Props> = (props) => {
   const {isOpen, onOpen, onClose} = useDisclosure();
   const toast = useToast();
 
-  const handleClick: MouseEventHandler<HTMLButtonElement> = async (event) => {
-    try {
+  const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
+    parseError(async () => {
       await onSubmit(event);
       onClose();
-    } catch ({message, name}) {
-      toast({
-        description: message as string,
-        title: name as string,
-        status: "error",
-        isClosable: true,
-      });
-    }
+    }).then((err) => err && toast(err));
   };
 
   return (

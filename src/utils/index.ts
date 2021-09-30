@@ -1,3 +1,5 @@
+import {UseToastOptions} from "@chakra-ui/react";
+
 export class CustomError extends Error {
   constructor(name: string, message: string) {
     // Pasa los argumentos restantes (incluidos los específicos del proveedor) al constructor padre
@@ -19,4 +21,19 @@ export const getCurrentDate = () => {
   now = new Date(now.getTime() - offset * 60 * 1000);
 
   return now.toISOString().substring(0, 10);
+};
+
+type ParseErrorFunction = (func: () => Promise<void>) => Promise<UseToastOptions | undefined>;
+
+export const parseError: ParseErrorFunction = async (func) => {
+  try {
+    await func();
+  } catch ({message, name}) {
+    return {
+      description: message as string,
+      title: name as string,
+      status: "error",
+      isClosable: true,
+    };
+  }
 };

@@ -36,6 +36,7 @@ declare global {
     groups: GroupT[];
     addGroup: (name: string, simplified_debts: boolean, members: string[]) => void;
     removeGroup: (group_id: string) => void;
+    getGroupById: (group_id: string) => GroupT | undefined;
   }
 
   // EXPENSE

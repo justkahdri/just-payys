@@ -9,6 +9,9 @@ const contextDefaultValues: GroupsContextState = {
   removeGroup: () => {
     throw new Error("removeGroup not implemented in GroupsContext");
   },
+  getGroupById: () => {
+    throw new Error("getGroupById not implemented in GroupsContext");
+  },
 };
 
 export const GroupsContext = createContext<GroupsContextState>(contextDefaultValues);
@@ -23,6 +26,7 @@ const GroupsProvider: FC = ({children}) => {
   };
 
   const removeGroup = (id: string) => setGroups((groups) => groups.filter((g) => g.id !== id));
+  const getGroupById = (id: string) => groups.find((g) => g.id == id);
 
   return (
     <GroupsContext.Provider
@@ -30,6 +34,7 @@ const GroupsProvider: FC = ({children}) => {
         groups,
         addGroup,
         removeGroup,
+        getGroupById,
       }}
     >
       {children}
