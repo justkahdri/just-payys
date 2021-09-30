@@ -48,6 +48,8 @@ declare global {
     group_id: string;
     participants: string[];
     divided: "equal" | "custom";
+    notes: string;
+    expense_date: string;
   }
 
   interface ExpenseT extends NewExpense {

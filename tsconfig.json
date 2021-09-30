@@ -8,10 +8,10 @@
     "baseUrl": "src",
     "paths": {
       "@components/*": ["components/*"],
-      "@contexts/*": ["contexts/*"],
+      "@pages/*": ["pages/*"],
       "@contexts": ["contexts"],
-      "@utils": ["utils"],
-      "@pages/*": ["pages/*"]
+      "@contexts/*": ["contexts/*"],
+      "@utils": ["utils"]
     },
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,

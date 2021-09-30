@@ -23,17 +23,11 @@ export const getCurrentDate = () => {
   return now.toISOString().substring(0, 10);
 };
 
-type ParseErrorFunction = (func: () => Promise<void>) => Promise<UseToastOptions | undefined>;
+type ParseErrorFunction = (name: string, message: string) => UseToastOptions;
 
-export const parseError: ParseErrorFunction = async (func) => {
-  try {
-    await func();
-  } catch ({message, name}) {
-    return {
-      description: message as string,
-      title: name as string,
-      status: "error",
-      isClosable: true,
-    };
-  }
-};
+export const parseError: ParseErrorFunction = (name, message) => ({
+  description: message as string,
+  title: name as string,
+  status: "error",
+  isClosable: true,
+});

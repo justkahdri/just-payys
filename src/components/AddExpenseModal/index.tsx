@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {RefObject, useContext, useEffect, useRef, useState} from "react";
 import {
   useDisclosure,
   Button,
@@ -12,6 +12,7 @@ import {
   Select,
   Stack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import {IoReceiptOutline} from "react-icons/io5";
 
@@ -19,8 +20,8 @@ import CostInput from "./CostInput";
 import DescriptionInput from "./DescriptionInput";
 import AdvancedSettings from "./AdvancedSettings";
 
-import {GroupsContext, PeopleContext} from "@contexts";
-import {getCurrentDate} from "@utils";
+import {GroupsContext, PeopleContext, ExpensesContext} from "@contexts";
+import {getCurrentDate, parseError} from "@utils";
 
 const AddExpenseModal = () => {
   const {isOpen, onOpen, onClose} = useDisclosure();
@@ -52,6 +53,7 @@ const AddExpenseModal = () => {
 
 const AddExpenseForm = ({handleClose}: {handleClose: VoidFunction}) => {
   const {people} = useContext(PeopleContext);
+  const {addExpense} = useContext(ExpensesContext);
   const {groups, getGroupById} = useContext(GroupsContext);
 
   const [selectedGroup, setSelectedGroup] = useState<GroupT>();
@@ -61,8 +63,10 @@ const AddExpenseForm = ({handleClose}: {handleClose: VoidFunction}) => {
   const [filteredPeople, setFilteredPeople] = useState<PersonT[]>([]);
   const [expenseDate, setExpenseDate] = useState(getCurrentDate());
   const [notes, setNotes] = useState("");
+  const payerSelect = useRef(null) as RefObject<HTMLSelectElement>;
+  const toast = useToast();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedGroup) {
       setFilteredPeople(people.filter((p) => selectedGroup.members.includes(p.id)));
     } else {
@@ -71,18 +75,25 @@ const AddExpenseForm = ({handleClose}: {handleClose: VoidFunction}) => {
   }, [selectedGroup, people]);
 
   const handleSubmit = () => {
-    if (selectedGroup) {
-      console.log({
-        group: selectedGroup,
-        payed_by: "buyer",
-        divided_in: filteredPeople,
-        cost,
-        expenseDate,
-        notes,
-      });
-    } else {
-      throw new Error();
-    }
+    let options;
+
+    if (selectedGroup && payerSelect.current) {
+      if (cost && Number(cost) > 0) {
+        addExpense({
+          group_id: selectedGroup.id,
+          description,
+          payed_by: payerSelect.current.value,
+          participants: filteredPeople.map((p) => p.id),
+          cost: Number(cost),
+          expense_date: expenseDate,
+          divided: "equal",
+          notes,
+        });
+        handleClose();
+      } else options = parseError("Please enter a valid cost", "Cost must be greater than zero");
+    } else
+      options = parseError("An error occurred submitting", "Who pays the expense is not defined.");
+    options && toast(options);
   };
 
   return (
@@ -111,7 +122,7 @@ const AddExpenseForm = ({handleClose}: {handleClose: VoidFunction}) => {
           {filteredPeople.length && (
             <Stack align="center" direction="row" justify="center" wrap="wrap">
               <Text>Payed by</Text>
-              <Select id="buyer" size="sm" width="fit-content">
+              <Select ref={payerSelect} id="payed_by" size="sm" width="fit-content">
                 {filteredPeople.map((person) => (
                   <option key={person.id} value={person.id}>
                     {person.name}
@@ -135,7 +146,11 @@ const AddExpenseForm = ({handleClose}: {handleClose: VoidFunction}) => {
           <Button colorScheme="red" variant="outline" onClick={handleClose}>
             Close
           </Button>
-          <Button w="100px" onClick={handleSubmit}>
+          <Button
+            isDisabled={!selectedGroup || !description || !cost}
+            w="100px"
+            onClick={handleSubmit}
+          >
             Save
           </Button>
         </Stack>

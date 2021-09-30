@@ -1,15 +1,7 @@
 import React, {useContext, useState} from "react";
 import type {NextPage} from "next";
 import Head from "next/head";
-import {
-  Avatar,
-  Checkbox,
-  Text,
-  CheckboxGroup,
-  Input,
-  Stack,
-  useCheckboxGroup,
-} from "@chakra-ui/react";
+import {Avatar, Checkbox, Text, CheckboxGroup, Input, Stack} from "@chakra-ui/react";
 import {AiOutlineUsergroupAdd} from "react-icons/ai";
 
 import Layout from "@components/Layout";
@@ -41,7 +33,7 @@ const GroupsForm = () => {
   const {people} = useContext(PeopleContext);
   const [groupName, setGroupName] = useState("");
   const [simplified, setSimplified] = useState(true);
-  const {value: members, setValue: setMembers} = useCheckboxGroup();
+  const [members, setMembers] = useState<Array<string | number>>([]);
 
   const handleSubmit = async () => {
     if (groupName) {

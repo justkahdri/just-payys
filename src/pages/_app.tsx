@@ -4,17 +4,15 @@ import {ChakraProvider} from "@chakra-ui/react";
 
 import customTheme from "../theme";
 
-import {PeopleProvider, GroupsProvider} from "@contexts";
+import {MainProvider} from "@contexts";
 
 function MyApp({Component, pageProps}: AppProps) {
   return (
-    <GroupsProvider>
-      <PeopleProvider>
-        <ChakraProvider theme={customTheme}>
-          <Component {...pageProps} />
-        </ChakraProvider>
-      </PeopleProvider>
-    </GroupsProvider>
+    <MainProvider>
+      <ChakraProvider theme={customTheme}>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </MainProvider>
   );
 }
 export default MyApp;

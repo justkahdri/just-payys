@@ -18,11 +18,15 @@ const NewItemForm: FC<Props> = (props) => {
   const {isOpen, onOpen, onClose} = useDisclosure();
   const toast = useToast();
 
-  const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
-    parseError(async () => {
+  const handleClick: MouseEventHandler<HTMLButtonElement> = async (event) => {
+    try {
       await onSubmit(event);
       onClose();
-    }).then((err) => err && toast(err));
+    } catch ({name, message}) {
+      const options = parseError(name as string, message as string);
+
+      toast(options);
+    }
   };
 
   return (
