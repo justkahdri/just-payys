@@ -1,11 +1,11 @@
-import React, {useContext, useState} from "react";
+import React, {RefObject, useContext, useRef, useState} from "react";
 import type {NextPage} from "next";
 import Head from "next/head";
 import {Avatar, Checkbox, Text, CheckboxGroup, Input, Stack} from "@chakra-ui/react";
 import {AiOutlineUsergroupAdd} from "react-icons/ai";
 
 import Layout from "@components/Layout";
-import NewItemForm, {LabeledSwitch} from "@components/NewItemForm";
+import CollapseForm, {LabeledSwitch} from "@components/CollapseForm";
 import {ListedGroup} from "@components/ListedItem";
 import {GroupsContext, PeopleContext} from "@contexts";
 import {CustomError} from "@utils";
@@ -34,6 +34,7 @@ const GroupsForm = () => {
   const [groupName, setGroupName] = useState("");
   const [simplified, setSimplified] = useState(true);
   const [members, setMembers] = useState<Array<string | number>>([]);
+  const groupInput = useRef() as RefObject<HTMLInputElement>;
 
   const handleSubmit = async () => {
     if (groupName) {
@@ -55,16 +56,18 @@ const GroupsForm = () => {
   };
 
   return (
-    <NewItemForm
+    <CollapseForm
       btnIcon={<AiOutlineUsergroupAdd />}
       doneMessage="Add members"
-      isDisabled={people.length < 2}
+      focusOnOpen={groupInput}
+      isDisabled={people.length < 2 || !groupName}
       openMessage="Create new group"
       onSubmit={handleSubmit}
     >
       <Stack align="center" direction="row">
-        <Avatar name={groupName} src="https://bit.ly/broken-url" />
+        <Avatar name={groupName} />
         <Input
+          ref={groupInput}
           placeholder="Group's name"
           value={groupName}
           onChange={({currentTarget: {value}}) => setGroupName(value)}
@@ -90,7 +93,7 @@ const GroupsForm = () => {
           )}
         </Stack>
       </CheckboxGroup>
-    </NewItemForm>
+    </CollapseForm>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, {ReactElement, FC, MouseEventHandler, MouseEvent} from "react";
+import React, {ReactElement, FC, MouseEventHandler, MouseEvent, RefObject} from "react";
 import {Stack, Button, useDisclosure, Collapse, useToast} from "@chakra-ui/react";
 import {IconType} from "react-icons";
 
@@ -10,15 +10,29 @@ interface Props {
   openMessage: string;
   btnIcon: ReactElement<IconType>;
   onSubmit: (event: MouseEvent<HTMLButtonElement>) => Promise<void>;
+  focusOnOpen?: RefObject<HTMLElement>;
   isDisabled?: boolean;
 }
 
-const NewItemForm: FC<Props> = (props) => {
-  const {btnIcon, children, openMessage, onSubmit, doneMessage, isDisabled = false} = props;
+const CollapseForm: FC<Props> = (props) => {
+  const {
+    btnIcon,
+    children,
+    openMessage,
+    focusOnOpen,
+    onSubmit,
+    doneMessage,
+    isDisabled = false,
+  } = props;
   const {isOpen, onOpen, onClose} = useDisclosure();
   const toast = useToast();
 
-  const handleClick: MouseEventHandler<HTMLButtonElement> = async (event) => {
+  const handleOpen = () => {
+    onOpen();
+    setTimeout(() => focusOnOpen?.current?.focus(), 200);
+  };
+
+  const handleSubmit: MouseEventHandler<HTMLButtonElement> = async (event) => {
     try {
       await onSubmit(event);
       onClose();
@@ -37,7 +51,7 @@ const NewItemForm: FC<Props> = (props) => {
           colorScheme="purple"
           leftIcon={btnIcon}
           variant="outline"
-          onClick={onOpen}
+          onClick={handleOpen}
         >
           {openMessage}
         </Button>
@@ -56,7 +70,7 @@ const NewItemForm: FC<Props> = (props) => {
             >
               Cancel
             </Button>
-            <Button flex={1} isDisabled={isDisabled} maxW="150px" size="sm" onClick={handleClick}>
+            <Button flex={1} isDisabled={isDisabled} maxW="150px" size="sm" onClick={handleSubmit}>
               {doneMessage}
             </Button>
           </Stack>
@@ -66,4 +80,4 @@ const NewItemForm: FC<Props> = (props) => {
   );
 };
 
-export default NewItemForm;
+export default CollapseForm;

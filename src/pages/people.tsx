@@ -1,11 +1,11 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, RefObject, useRef} from "react";
 import type {NextPage} from "next";
 import Head from "next/head";
 import {Stack, Input, Avatar, Textarea} from "@chakra-ui/react";
 import {AiOutlineUserAdd} from "react-icons/ai";
 
 import Layout from "@components/Layout";
-import NewItemForm from "@components/NewItemForm";
+import CollapseForm from "@components/CollapseForm";
 import {PeopleContext} from "@contexts";
 import {ListedPerson} from "@components/ListedItem";
 import {CustomError} from "@utils";
@@ -32,6 +32,7 @@ const PeopleForm = () => {
   const [name, setName] = useState("");
   const [notes, setNotes] = useState("");
   const {addPerson} = useContext(PeopleContext);
+  const nameInput = useRef() as RefObject<HTMLInputElement>;
 
   const handleSubmit = async () => {
     // Adds to context if name is defined
@@ -49,18 +50,22 @@ const PeopleForm = () => {
   };
 
   return (
-    <NewItemForm
+    <CollapseForm
       btnIcon={<AiOutlineUserAdd />}
       doneMessage="Save"
+      focusOnOpen={nameInput}
+      isDisabled={!name}
       openMessage="Add new person"
       onSubmit={handleSubmit}
     >
       <Stack align="center" direction="row">
-        <Avatar name={name} src="https://bit.ly/broken-url" />
+        <Avatar name={name} />
         <Input
+          ref={nameInput}
           placeholder="John Doe"
           value={name}
           onChange={({currentTarget: {value}}) => setName(value)}
+          // onKeyUp={({code}) => code == "Enter" && handleSubmit()}
         />
       </Stack>
       <Textarea
@@ -70,7 +75,7 @@ const PeopleForm = () => {
         value={notes}
         onChange={({currentTarget: {value}}) => setNotes(value)}
       />
-    </NewItemForm>
+    </CollapseForm>
   );
 };
 

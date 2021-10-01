@@ -14,7 +14,7 @@ const ListedItem: FC<Props> = ({name, id, balance, children}) => (
   <NextLink href="/groups">
     <LinkBox>
       <Stack align="center" direction="row" overflow="hidden">
-        <Avatar name={name} src="https://bit.ly/broken-url" />
+        <Avatar name={name} />
         <Flex direction="column">
           <Heading as="h4" fontSize="md">
             {name}
