@@ -1,5 +1,7 @@
-import React, {createContext, useState, FC} from "react";
+import React, {createContext, useContext, useState, FC} from "react";
 import {nanoid} from "nanoid";
+
+import {GroupsContext, PeopleContext} from "@contexts";
 
 const contextDefaultValues: ExpensesContextState = {
   expenses: [],
@@ -15,9 +17,14 @@ export const ExpensesContext = createContext<ExpensesContextState>(contextDefaul
 
 const ExpensesProvider: FC = ({children}) => {
   const [expenses, setExpenses] = useState<ExpenseT[]>(contextDefaultValues.expenses);
+  const {modifyGroup} = useContext(GroupsContext);
+  const {modifyPerson} = useContext(PeopleContext);
 
   const addExpense = (expense: NewExpense) => {
     const newExpense = {id: nanoid(10), ...expense};
+
+    modifyGroup(newExpense.group_id, {related_expenses: [newExpense.id]});
+    modifyPerson(newExpense.participants, {related_expenses: [newExpense.id]});
 
     setExpenses((expenses) => [...expenses, newExpense]);
   };

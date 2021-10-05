@@ -17,6 +17,7 @@ declare global {
     addPerson: (name: string, notes?: string) => void;
     removePerson: (person_id: string) => void;
     getPersonById: (person_id: string) => PersonT | undefined;
+    modifyPerson: (people_id: string[] | string, modifications: Partial<PersonT>) => void;
   }
 
   // GROUP OF PEOPLE
@@ -37,6 +38,7 @@ declare global {
     addGroup: (name: string, simplified_debts: boolean, members: string[]) => void;
     removeGroup: (group_id: string) => void;
     getGroupById: (group_id: string) => GroupT | undefined;
+    modifyGroup: (group_id: string, modifications: Partial<GroupT>) => void;
   }
 
   // EXPENSE

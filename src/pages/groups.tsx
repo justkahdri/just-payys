@@ -33,7 +33,7 @@ const GroupsForm = () => {
   const {people} = useContext(PeopleContext);
   const [groupName, setGroupName] = useState("");
   const [simplified, setSimplified] = useState(true);
-  const [members, setMembers] = useState<Array<string | number>>([]);
+  const [members, setMembers] = useState<Array<string | number>>(["SELF"]);
   const groupInput = useRef() as RefObject<HTMLInputElement>;
 
   const handleSubmit = async () => {
@@ -43,7 +43,7 @@ const GroupsForm = () => {
         addGroup(groupName, simplified, members as string[]);
         // Resets inputs
         setGroupName("");
-        setMembers([]);
+        setMembers(["SELF"]);
       } else {
         throw new CustomError(
           "Not enough members.",
@@ -84,7 +84,7 @@ const GroupsForm = () => {
         <Stack>
           {people.length >= 2 ? (
             people.map((member) => (
-              <Checkbox key={member.id} value={member.id}>
+              <Checkbox key={member.id} isDisabled={member.id == "SELF"} value={member.id}>
                 {member.name}
               </Checkbox>
             ))
