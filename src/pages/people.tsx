@@ -1,7 +1,7 @@
 import React, {useState, useContext, RefObject, useRef} from "react";
 import type {NextPage} from "next";
 import Head from "next/head";
-import {Stack, Input, Avatar, Textarea} from "@chakra-ui/react";
+import {Stack, Input, Text, Avatar, Textarea} from "@chakra-ui/react";
 import {AiOutlineUserAdd} from "react-icons/ai";
 
 import Layout from "@components/Layout";
@@ -19,9 +19,13 @@ const PeoplePage: NextPage = () => {
         <title>JustPayys - People</title>
       </Head>
       <Stack spacing={3}>
-        {people.map((person) => (
-          <ListedPerson key={person.id} {...person} />
-        ))}
+        {people.length ? (
+          people.map((person) => <ListedPerson key={person.id} {...person} />)
+        ) : (
+          <Text color="whiteAlpha.700" fontStyle="italic" textAlign="center">
+            There are no people yet. Add a new person below.
+          </Text>
+        )}
         <PeopleForm />
       </Stack>
     </Layout>

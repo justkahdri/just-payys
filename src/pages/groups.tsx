@@ -19,9 +19,13 @@ const GroupsPage: NextPage = () => {
         <title>JustPayys - Groups</title>
       </Head>
       <Stack spacing={3}>
-        {groups.map((group) => (
-          <ListedGroup key={group.id} {...group} />
-        ))}
+        {groups.length ? (
+          groups.map((group) => <ListedGroup key={group.id} {...group} />)
+        ) : (
+          <Text color="whiteAlpha.700" fontStyle="italic" textAlign="center">
+            There are no groups yet.
+          </Text>
+        )}
         <GroupsForm />
       </Stack>
     </Layout>
@@ -33,7 +37,7 @@ const GroupsForm = () => {
   const {people} = useContext(PeopleContext);
   const [groupName, setGroupName] = useState("");
   const [simplified, setSimplified] = useState(true);
-  const [members, setMembers] = useState<Array<string | number>>(["SELF"]);
+  const [members, setMembers] = useState<Array<string | number>>([]);
   const groupInput = useRef() as RefObject<HTMLInputElement>;
 
   const handleSubmit = async () => {
@@ -43,7 +47,7 @@ const GroupsForm = () => {
         addGroup(groupName, simplified, members as string[]);
         // Resets inputs
         setGroupName("");
-        setMembers(["SELF"]);
+        setMembers([]);
       } else {
         throw new CustomError(
           "Not enough members.",
@@ -84,7 +88,7 @@ const GroupsForm = () => {
         <Stack>
           {people.length >= 2 ? (
             people.map((member) => (
-              <Checkbox key={member.id} isDisabled={member.id == "SELF"} value={member.id}>
+              <Checkbox key={member.id} value={member.id}>
                 {member.name}
               </Checkbox>
             ))

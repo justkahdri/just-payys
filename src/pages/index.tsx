@@ -1,12 +1,14 @@
-import React from "react";
-import {Text, Button, Stack} from "@chakra-ui/react";
+import React, {useContext} from "react";
+import {Text, Stack, Heading} from "@chakra-ui/react";
 import type {NextPage} from "next";
 import Head from "next/head";
-import {AiOutlineUsergroupAdd} from "react-icons/ai";
 
 import Layout from "@components/Layout";
+import {ExpensesContext} from "@contexts";
 
 const Home: NextPage = () => {
+  const {expenses} = useContext(ExpensesContext);
+
   return (
     <>
       <Head>
@@ -22,9 +24,12 @@ const Home: NextPage = () => {
               $45.25
             </Text>
           </Text>
-          <Button leftIcon={<AiOutlineUsergroupAdd />} variant="outline">
-            Create new group
-          </Button>
+          {expenses.map((expense) => (
+            <Stack key={expense.id}>
+              <Heading>{expense.description}</Heading>
+              <Text>Total cost: {expense.cost}</Text>
+            </Stack>
+          ))}
         </Stack>
       </Layout>
     </>

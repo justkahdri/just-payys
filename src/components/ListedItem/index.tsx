@@ -19,33 +19,30 @@ const ListedItem: FC<Props> = ({name, id, balance, children}) => (
           <Heading as="h4" fontSize="md">
             {name}
           </Heading>
-          {id !== "SELF" && ( // If is the user it doesn't show the id.
-            <Text color="gray.400" fontSize="sm" lineHeight="normal">
-              #{id}
-            </Text>
-          )}
+          <Text color="gray.400" fontSize="sm" lineHeight="normal">
+            #{id}
+          </Text>
           {children}
         </Flex>
-        {id !== "SELF" && ( // If is the user it doesn't show debts.
-          <Stack align="end" flex={1}>
-            {balance ? (
-              <Flex color="green.400" direction="column" justify="center" textAlign="end">
-                <Text fontSize="xs">{balance > 0 ? "they owe you" : "you owe"}</Text>
-                <Text fontSize="sm" fontWeight={500}>
-                  ${Math.abs(balance).toFixed(2).toLocaleString()}
-                </Text>
-              </Flex>
-            ) : (
-              <Text color="gray.400" direction="column" fontSize="sm" textAlign="end">
-                {
-                  balance == 0 ? "No debts" : "No expenses"
-                  /* If balance is defined shows no debts, 
-                otherwise there is no expenses */
-                }
+
+        <Stack align="end" flex={1}>
+          {balance ? (
+            <Flex color="green.400" direction="column" justify="center" textAlign="end">
+              <Text fontSize="xs">{balance > 0 ? "they owe you" : "you owe"}</Text>
+              <Text fontSize="sm" fontWeight={500}>
+                ${Math.abs(balance).toFixed(2).toLocaleString()}
               </Text>
-            )}
-          </Stack>
-        )}
+            </Flex>
+          ) : (
+            <Text color="gray.400" direction="column" fontSize="sm" textAlign="end">
+              {
+                balance == 0 ? "No debts" : "No expenses"
+                /* If balance is defined shows no debts, 
+                otherwise there is no expenses */
+              }
+            </Text>
+          )}
+        </Stack>
       </Stack>
     </LinkBox>
   </NextLink>

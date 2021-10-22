@@ -4,7 +4,19 @@ import {nanoid} from "nanoid";
 import {GroupsContext, PeopleContext} from "@contexts";
 
 const contextDefaultValues: ExpensesContextState = {
-  expenses: [],
+  expenses: [
+    {
+      id: "1",
+      payed_by: "SELF",
+      group_id: "a",
+      participants: ["SELF"],
+      divided: "equal",
+      notes: "an example note.",
+      expense_date: "2011-10-05",
+      cost: 100.32,
+      description: "example",
+    },
+  ],
   addExpense: () => {
     throw new Error("addExpense not implemented in ExpensesContext");
   },
