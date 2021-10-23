@@ -1,14 +1,11 @@
 import React from "react";
-import Link from "next/link";
-import {Flex, Icon} from "@chakra-ui/react";
+import {Flex, Icon, Link} from "@chakra-ui/react";
 import {VscGraph} from "react-icons/vsc";
 import {HiOutlineUserGroup} from "react-icons/hi";
 import {RiGroupLine} from "react-icons/ri";
-import {useRouter} from "next/router";
 
 const Footer = () => {
   const iconSize = 5;
-  const {pathname} = useRouter();
 
   const links = [
     {icon: VscGraph, route: "/", title: "Go to activity"},
@@ -31,14 +28,12 @@ const Footer = () => {
     >
       {links.map((link) => (
         <Link key={link.title} href={link.route}>
-          <a>
-            <Icon
-              aria-label={link.title}
-              as={link.icon}
-              boxSize={iconSize}
-              color={pathname == link.route ? "purple.400" : "white"}
-            />
-          </a>
+          <Icon
+            aria-label={link.title}
+            as={link.icon}
+            boxSize={iconSize}
+            color={true ? "purple.400" : "white"}
+          />
         </Link>
       ))}
     </Flex>
