@@ -1,6 +1,6 @@
 import React from "react";
-import {Icon, Stack, Heading, Flex, useColorMode} from "@chakra-ui/react";
-import {AiOutlineUsergroupAdd, AiOutlineSearch} from "react-icons/ai";
+import {Icon, Stack, Heading, Flex, useColorMode, Link} from "@chakra-ui/react";
+import {FaBug} from "react-icons/fa";
 import {BsFillSunFill, BsFillMoonFill} from "react-icons/bs";
 
 const Header = () => {
@@ -21,11 +21,16 @@ const Header = () => {
       <Stack align="center" as="nav" direction="row" spacing={4}>
         <Icon
           as={colorMode === "light" ? BsFillMoonFill : BsFillSunFill}
-          boxSize={4}
+          boxSize={5}
           onClick={toggleColorMode}
         />
-        <Icon as={AiOutlineSearch} boxSize={5} />
-        <Icon as={AiOutlineUsergroupAdd} boxSize={5} />
+        <Link
+          isExternal
+          aria-label="Report a bug"
+          href="https://github.com/justkahdri/just-payys/issues/new"
+        >
+          <Icon aria-label="Report a bug" as={FaBug} boxSize={5} mb={0.5} />
+        </Link>
       </Stack>
     </Flex>
   );

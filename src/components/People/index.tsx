@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import {
   Input,
   FormControl,
@@ -19,24 +19,25 @@ import {
 import {BsPlusSquare, BsCheck} from "react-icons/bs";
 import {RouteComponentProps, Link} from "@reach/router";
 
+import {PeopleContext} from "../../contexts/PeopleProvider";
 import {parseError} from "../../utils";
 
-const PeoplePage = (props: RouteComponentProps) => {
+const PeoplePage = (_: RouteComponentProps) => {
   const [namesInput, setNamesInput] = useState("");
-  const [people, setPeople] = useState<string[]>([]);
+  const {people, addPerson, removePerson} = useContext(PeopleContext);
+
+  const usedNames = people.map((p) => p.name.toLowerCase());
   const toast = useToast();
 
-  const addNewPerson = () => {
-    if (namesInput) {
-      setPeople((people) => [...people, namesInput]);
+  const handleAddPerson = () => {
+    if (namesInput && usedNames.includes(namesInput.toLowerCase())) {
+      toast(parseError("Name already in use", "Please write a different name."));
+    } else if (namesInput) {
+      addPerson(namesInput);
       setNamesInput("");
     } else {
       toast(parseError("A name is required", "Please write a name before adding a new person."));
     }
-  };
-
-  const deletePerson = (person: string) => {
-    setPeople((names) => names.filter((n) => n !== person));
   };
 
   return (
@@ -50,14 +51,14 @@ const PeoplePage = (props: RouteComponentProps) => {
               placeholder="Robias Tumiz"
               value={namesInput}
               onChange={({currentTarget: {value}}) => setNamesInput(value)}
-              onKeyUp={(e) => e.key == "Enter" && addNewPerson()}
+              onKeyUp={(e) => e.key == "Enter" && handleAddPerson()}
             />
             <InputRightElement>
-              <Icon as={BsPlusSquare} color="secondary.200" onClick={addNewPerson} />
+              <Icon as={BsPlusSquare} color="secondary.200" onClick={handleAddPerson} />
             </InputRightElement>
           </InputGroup>
 
-          {!people.length && (
+          {people.length < 2 && (
             <FormHelperText>
               You can use <i>&quot;Enter&quot;</i> to add the new name too.
             </FormHelperText>
@@ -66,14 +67,14 @@ const PeoplePage = (props: RouteComponentProps) => {
 
         <Wrap justify="center" spacing="2vw">
           {people.map((person, i) => (
-            <WrapItem key={person}>
+            <WrapItem key={person.id}>
               <Badge
                 alignItems="center"
                 colorScheme={i % 2 ? "primary" : "secondary"}
                 display="flex"
                 variant="outline"
               >
-                {person} <CloseButton size="sm" onClick={() => deletePerson(person)} />
+                {person.name} <CloseButton size="sm" onClick={() => removePerson(person.id)} />
               </Badge>
             </WrapItem>
           ))}
@@ -83,7 +84,7 @@ const PeoplePage = (props: RouteComponentProps) => {
       <Button
         alignSelf="flex-end"
         as={Link}
-        isDisabled={!people.length}
+        isDisabled={people.length < 2}
         rightIcon={<Icon as={BsCheck} boxSize={5} />}
         to="/"
         variant="outline"
