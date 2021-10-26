@@ -9,7 +9,7 @@ interface Props extends StackProps {
 
 const DescriptionInput = ({description, descriptionChange, ...rest}: Props) => (
   <Stack direction="row" id="description-row" {...rest}>
-    <IconButton aria-label="Select category" colorScheme="purple" icon={<IoReceiptOutline />} />
+    <IconButton aria-label="Select category" colorScheme="primary" icon={<IoReceiptOutline />} />
     <Input
       id="description"
       placeholder="Description"

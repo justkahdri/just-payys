@@ -7,9 +7,8 @@ import App from "./App";
 
 ReactDOM.render(
   <>
-    {console.log(theme.config.initialColorMode)}
-    <ColorModeScript initialColorMode="dark" />
     <React.StrictMode>
+      <ColorModeScript initialColorMode={theme.config.colorMode} />
       <App />
     </React.StrictMode>
   </>,

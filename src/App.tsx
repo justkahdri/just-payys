@@ -1,24 +1,25 @@
 import React from "react";
-import {ChakraProvider, ColorModeProvider} from "@chakra-ui/react";
-import {Flex, Box} from "@chakra-ui/react";
+import {ChakraProvider} from "@chakra-ui/react";
+import {Flex} from "@chakra-ui/react";
+import {Router} from "@reach/router";
 
 import customTheme from "./theme";
-import ExpenseForm from "./components/ExpenseForm";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import {NewExpensePage, PeoplePage, ControlPanel, Header, Footer} from "./components";
 
 const App = () => {
   return (
     <ChakraProvider theme={customTheme}>
-      <ColorModeProvider options={{}}>
-        <Flex direction="column" id="app" minH="100vh">
-          <Header />
-          <Box as="main" flex={1} p={5} position="relative">
-            <ExpenseForm />
-          </Box>
-          <Footer />
+      <Flex direction="column" id="app" minH="100vh">
+        <Header />
+        <Flex as="main" direction="column" flex={1} p={5}>
+          <Router>
+            <ControlPanel path="/" />
+            <PeoplePage path="/people" />
+            <NewExpensePage path="/new-expense" />
+          </Router>
         </Flex>
-      </ColorModeProvider>
+        <Footer />
+      </Flex>
     </ChakraProvider>
   );
 };
