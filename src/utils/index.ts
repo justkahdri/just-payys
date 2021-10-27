@@ -22,3 +22,7 @@ export const parseError: ParseErrorFunction = (name, message) => ({
   status: "error",
   isClosable: true,
 });
+
+export function compareArrays<Type>(array1: Type[], array2: Type[]) {
+  return array1.length === array2.length && array1.every((el) => array2.includes(el));
+}

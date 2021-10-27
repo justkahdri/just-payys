@@ -41,7 +41,7 @@ const PeoplePage = (_: RouteComponentProps) => {
   };
 
   return (
-    <Flex direction="column" justify="space-between" minH="60vh" px={4}>
+    <Flex direction="column" justify="space-between" minH="60vh" px={5}>
       <Stack pb={5} spacing={5}>
         <FormControl id="email">
           <FormLabel>Names:</FormLabel>

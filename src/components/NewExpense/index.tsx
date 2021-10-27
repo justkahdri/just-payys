@@ -1,19 +1,38 @@
 import React, {RefObject, useRef, useContext, useState} from "react";
-import {Button, Select, Input, Stack, Text, useToast} from "@chakra-ui/react";
+import {
+  Button,
+  Select,
+  Input,
+  Stack,
+  Text,
+  useToast,
+  CheckboxGroup,
+  Wrap,
+  Checkbox,
+  Collapse,
+  useDisclosure,
+  Box,
+} from "@chakra-ui/react";
 import {Link, RouteComponentProps, Redirect, useNavigate} from "@reach/router";
 
-import {parseError} from "../../utils";
+import {parseError, compareArrays} from "../../utils";
 import {PeopleContext} from "../../contexts/PeopleProvider";
 
 import DescriptionInput from "./DescriptionInput";
 
 const NewExpensePage = (_: RouteComponentProps) => {
-  const {people, divideEqual} = useContext(PeopleContext);
-  const [description, setDescription] = useState("");
-  const [cost, setCost] = useState("");
-  const payerSelect = useRef(null) as RefObject<HTMLSelectElement>;
+  const {isOpen, onToggle} = useDisclosure();
   const toast = useToast();
   const navigate = useNavigate();
+
+  const {people, divideEqual, getPersonById} = useContext(PeopleContext);
+  const allIDs = people.map((p) => p.id);
+
+  const [description, setDescription] = useState("");
+  const [cost, setCost] = useState("");
+  const [consumersGroup, setConsumersGroup] = useState(allIDs);
+
+  const payerSelect = useRef(null) as RefObject<HTMLSelectElement>;
 
   const handleSubmit = () => {
     let options;
@@ -23,7 +42,7 @@ const NewExpensePage = (_: RouteComponentProps) => {
         divideEqual(
           Number(cost),
           payerSelect.current.value,
-          people.map((p) => p.id), // TODO: Should load from selected people
+          allIDs, // TODO: Should load from selected people
         );
         navigate("/", {state: {newExpense: true}});
       } else options = parseError("Please enter a valid cost", "Cost must be greater than zero");
@@ -35,10 +54,10 @@ const NewExpensePage = (_: RouteComponentProps) => {
   if (people.length < 2) return <Redirect noThrow to="/people" />;
 
   return (
-    <Stack px={4} spacing="50px">
+    <Stack px={5} spacing={4}>
       <Stack spacing={3}>
         <DescriptionInput description={description} descriptionChange={setDescription} />
-        <Stack align="center" direction="row" id="cost-row">
+        <Box align="center" direction="row" id="cost-row">
           <Input
             flex={2}
             id="cost"
@@ -47,9 +66,9 @@ const NewExpensePage = (_: RouteComponentProps) => {
             value={cost}
             onChange={({currentTarget: {value}}) => setCost(value)}
           />
-        </Stack>
+        </Box>
 
-        <Stack align="center" direction="row" justify="center" wrap="wrap">
+        <Stack align="center" direction="row" justify="center" textAlign="center" wrap="wrap">
           <Text>Paid by</Text>
           <Select ref={payerSelect} id="paid_by" size="sm" width="fit-content">
             {people.map((person) => (
@@ -60,10 +79,32 @@ const NewExpensePage = (_: RouteComponentProps) => {
           </Select>
           <Text id="division">
             {" and equally divided "}
-            <Button colorScheme="secondary" variant="link">
-              among all.
+            <Button colorScheme="secondary" variant="link" whiteSpace="pre-wrap" onClick={onToggle}>
+              {compareArrays(consumersGroup, allIDs)
+                ? "among all."
+                : `between ${getPersonById(consumersGroup[0])?.name} and ${
+                    consumersGroup.length - 1
+                  } more`}
             </Button>
           </Text>
+        </Stack>
+
+        <Stack align="center" direction="row" justify="center" py={2} wrap="wrap">
+          <Collapse animateOpacity in={isOpen}>
+            <CheckboxGroup
+              colorScheme="green"
+              value={consumersGroup}
+              onChange={(value) => setConsumersGroup(value as string[])}
+            >
+              <Wrap>
+                {people.map((person) => (
+                  <Checkbox key={person.id} value={person.id}>
+                    {person.name}
+                  </Checkbox>
+                ))}
+              </Wrap>
+            </CheckboxGroup>
+          </Collapse>
         </Stack>
       </Stack>
       <Stack direction="row" justify="end">
