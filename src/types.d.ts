@@ -14,7 +14,8 @@ declare global {
     addPerson: (name: string) => void;
     removePerson: (person_id: string) => void;
     getPersonById: (person_id: string) => PersonT | undefined;
-    modifyPerson: (people_id: string[] | string, modifications: Partial<PersonT>) => void;
+    modifyById: (people_id: string[] | string, modifications: Partial<PersonT>) => void;
+    divideEqual: (cost: number, payer_id: string, consumers_ids: string[]) => void;
   }
 
   // EXPENSE
@@ -22,7 +23,7 @@ declare global {
     id?: string;
     description: string;
     cost: number;
-    payed_by: string;
+    paid_by: string;
     group_id: string;
     participants: string[];
     divided: "equal" | "custom";

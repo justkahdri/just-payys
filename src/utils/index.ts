@@ -2,10 +2,10 @@ import {UseToastOptions} from "@chakra-ui/react";
 
 export class CustomError extends Error {
   constructor(name: string, message: string) {
-    // Pasa los argumentos restantes (incluidos los específicos del proveedor) al constructor padre
+    // Passes the necessary arguments (including the specified by the provider) to the constructor.
     super(message);
 
-    // Mantiene un seguimiento adecuado de la pila para el lugar donde se lanzó nuestro error (solo disponible en V8)
+    // Maintains an adequate follow of the stack where the error occurred (only available in V8)
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, CustomError);
     }

@@ -41,8 +41,8 @@ const PeoplePage = (_: RouteComponentProps) => {
   };
 
   return (
-    <Flex direction="column" justify="space-between" minH="60vh">
-      <Stack spacing={5}>
+    <Flex direction="column" justify="space-between" minH="60vh" px={4}>
+      <Stack pb={5} spacing={5}>
         <FormControl id="email">
           <FormLabel>Names:</FormLabel>
           <InputGroup size="md">
@@ -58,11 +58,13 @@ const PeoplePage = (_: RouteComponentProps) => {
             </InputRightElement>
           </InputGroup>
 
-          {people.length < 2 && (
-            <FormHelperText>
-              You can use <i>&quot;Enter&quot;</i> to add the new name too.
-            </FormHelperText>
-          )}
+          <FormHelperText minH="20px">
+            {people.length < 2 && (
+              <>
+                You can use <i>&quot;Enter&quot;</i> to add a new name too.
+              </>
+            )}
+          </FormHelperText>
         </FormControl>
 
         <Wrap justify="center" spacing="2vw">

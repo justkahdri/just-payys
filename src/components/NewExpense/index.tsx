@@ -1,6 +1,6 @@
 import React, {RefObject, useRef, useContext, useState} from "react";
 import {Button, Select, Input, Stack, Text, useToast} from "@chakra-ui/react";
-import {Link, RouteComponentProps} from "@reach/router";
+import {Link, RouteComponentProps, Redirect, useNavigate} from "@reach/router";
 
 import {parseError} from "../../utils";
 import {PeopleContext} from "../../contexts/PeopleProvider";
@@ -8,26 +8,34 @@ import {PeopleContext} from "../../contexts/PeopleProvider";
 import DescriptionInput from "./DescriptionInput";
 
 const NewExpensePage = (_: RouteComponentProps) => {
-  const {people} = useContext(PeopleContext);
+  const {people, divideEqual} = useContext(PeopleContext);
   const [description, setDescription] = useState("");
   const [cost, setCost] = useState("");
   const payerSelect = useRef(null) as RefObject<HTMLSelectElement>;
   const toast = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     let options;
 
-    if (payerSelect.current) {
-      if (cost && Number(cost) > 0) {
-        alert("Submit success");
+    if (payerSelect.current?.value) {
+      if (Number(cost) > 0) {
+        divideEqual(
+          Number(cost),
+          payerSelect.current.value,
+          people.map((p) => p.id), // TODO: Should load from selected people
+        );
+        navigate("/", {state: {newExpense: true}});
       } else options = parseError("Please enter a valid cost", "Cost must be greater than zero");
     } else
       options = parseError("An error occurred submitting", "Who pays the expense is not defined.");
     options && toast(options);
   };
 
+  if (people.length < 2) return <Redirect noThrow to="/people" />;
+
   return (
-    <Stack>
+    <Stack px={4} spacing="50px">
       <Stack spacing={3}>
         <DescriptionInput description={description} descriptionChange={setDescription} />
         <Stack align="center" direction="row" id="cost-row">
@@ -42,8 +50,8 @@ const NewExpensePage = (_: RouteComponentProps) => {
         </Stack>
 
         <Stack align="center" direction="row" justify="center" wrap="wrap">
-          <Text>Payed by</Text>
-          <Select ref={payerSelect} id="payed_by" size="sm" width="fit-content">
+          <Text>Paid by</Text>
+          <Select ref={payerSelect} id="paid_by" size="sm" width="fit-content">
             {people.map((person) => (
               <option key={person.id} value={person.id}>
                 {person.name}
@@ -51,9 +59,9 @@ const NewExpensePage = (_: RouteComponentProps) => {
             ))}
           </Select>
           <Text id="division">
-            {" and "}
+            {" and equally divided "}
             <Button colorScheme="secondary" variant="link">
-              equally divided.
+              among all.
             </Button>
           </Text>
         </Stack>
