@@ -4,7 +4,7 @@ import {VscGraph} from "react-icons/vsc";
 import {RiGroupLine, RiHome2Line} from "react-icons/ri";
 import {Location, Link} from "@reach/router";
 
-import {PeopleContext} from "../contexts/PeopleProvider";
+import {PeopleContext} from "../contexts";
 
 const Footer = () => {
   const iconSize = 5;

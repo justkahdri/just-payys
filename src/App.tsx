@@ -3,15 +3,15 @@ import {ChakraProvider} from "@chakra-ui/react";
 
 import customTheme from "./theme";
 import Layout from "./Layout";
-import PeopleProvider from "./contexts/PeopleProvider";
+import {MainProvider} from "./contexts";
 
 const App = () => {
   return (
-    <PeopleProvider>
+    <MainProvider>
       <ChakraProvider theme={customTheme}>
         <Layout />
       </ChakraProvider>
-    </PeopleProvider>
+    </MainProvider>
   );
 };
 

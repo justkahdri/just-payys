@@ -14,21 +14,14 @@ declare global {
     addPerson: (name: string) => void;
     removePerson: (person_id: string) => void;
     getPersonById: (person_id: string) => PersonT | undefined;
-    modifyById: (people_id: string[] | string, modifications: Partial<PersonT>) => void;
     divideEqual: (cost: number, payer_id: string, consumers_ids: string[]) => void;
   }
 
   // EXPENSE
   interface NewExpense {
-    id?: string;
     description: string;
     cost: number;
     paid_by: string;
-    group_id: string;
-    participants: string[];
-    divided: "equal" | "custom";
-    notes: string;
-    expense_date: string;
   }
 
   interface ExpenseT extends NewExpense {
@@ -38,7 +31,7 @@ declare global {
   interface ExpensesContextState {
     expenses: ExpenseT[];
     addExpense: (expense: NewExpense) => void;
-    removeExpense: (expense_id: string) => void;
+    // removeExpense: (expense_id: string) => void;
   }
 }
 

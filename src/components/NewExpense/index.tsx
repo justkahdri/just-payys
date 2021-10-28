@@ -16,7 +16,7 @@ import {
 import {Link, RouteComponentProps, Redirect, useNavigate} from "@reach/router";
 
 import {parseError, compareArrays} from "../../utils";
-import {PeopleContext} from "../../contexts/PeopleProvider";
+import {PeopleContext, ExpensesContext} from "../../contexts";
 
 import DescriptionInput from "./DescriptionInput";
 
@@ -26,6 +26,7 @@ const NewExpensePage = (_: RouteComponentProps) => {
   const navigate = useNavigate();
 
   const {people, divideEqual, getPersonById} = useContext(PeopleContext);
+  const {addExpense} = useContext(ExpensesContext);
   const allIDs = people.map((p) => p.id);
 
   const [description, setDescription] = useState("");
@@ -39,11 +40,8 @@ const NewExpensePage = (_: RouteComponentProps) => {
 
     if (payerSelect.current?.value) {
       if (Number(cost) > 0) {
-        divideEqual(
-          Number(cost),
-          payerSelect.current.value,
-          allIDs, // TODO: Should load from selected people
-        );
+        divideEqual(Number(cost), payerSelect.current.value, consumersGroup); // Adds to People Context
+        addExpense({cost: Number(cost), description, paid_by: payerSelect.current.value}); // Adds to Expenses Context
         navigate("/", {state: {newExpense: true}});
       } else options = parseError("Please enter a valid cost", "Cost must be greater than zero");
     } else
@@ -77,7 +75,7 @@ const NewExpensePage = (_: RouteComponentProps) => {
               </option>
             ))}
           </Select>
-          <Text id="division">
+          <Text id="division" minH="48px">
             {" and equally divided "}
             <Button colorScheme="secondary" variant="link" whiteSpace="pre-wrap" onClick={onToggle}>
               {compareArrays(consumersGroup, allIDs)
@@ -89,16 +87,20 @@ const NewExpensePage = (_: RouteComponentProps) => {
           </Text>
         </Stack>
 
-        <Stack align="center" direction="row" justify="center" py={2} wrap="wrap">
+        <Stack align="center" direction="row" justify="center" wrap="wrap">
           <Collapse animateOpacity in={isOpen}>
             <CheckboxGroup
               colorScheme="green"
               value={consumersGroup}
               onChange={(value) => setConsumersGroup(value as string[])}
             >
-              <Wrap>
+              <Wrap pb={2}>
                 {people.map((person) => (
-                  <Checkbox key={person.id} value={person.id}>
+                  <Checkbox
+                    key={person.id}
+                    isDisabled={consumersGroup.length == 2 && consumersGroup.includes(person.id)}
+                    value={person.id}
+                  >
                     {person.name}
                   </Checkbox>
                 ))}

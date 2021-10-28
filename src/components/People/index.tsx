@@ -19,7 +19,7 @@ import {
 import {BsPlusSquare, BsCheck} from "react-icons/bs";
 import {RouteComponentProps, Link} from "@reach/router";
 
-import {PeopleContext} from "../../contexts/PeopleProvider";
+import {PeopleContext} from "../../contexts";
 import {parseError} from "../../utils";
 
 const PeoplePage = (_: RouteComponentProps) => {

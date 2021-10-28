@@ -2,24 +2,24 @@ import React, {useContext, useEffect} from "react";
 import {Stack, Button, useToast} from "@chakra-ui/react";
 import {Link, Redirect, RouteComponentProps} from "@reach/router";
 
-import {PeopleContext} from "../contexts/PeopleProvider";
+import {PeopleContext} from "../contexts";
 
 type ControlPanelProps = RouteComponentProps<{
-  location: {state: {newExpense?: boolean}};
+  location: {state?: {newExpense?: boolean}};
 }>;
 
-const ControlPanel = (props: ControlPanelProps) => {
+const ControlPanel = ({location}: ControlPanelProps) => {
   const {people} = useContext(PeopleContext);
   const toast = useToast();
 
   useEffect(() => {
-    props.location?.state.newExpense &&
+    location?.state?.newExpense &&
       toast({
         title: "Expense added!",
         status: "success",
         isClosable: true,
       });
-  }, []);
+  }, [location, toast]);
 
   if (people.length < 2) return <Redirect noThrow to="/people" />;
 

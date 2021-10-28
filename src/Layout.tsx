@@ -7,7 +7,7 @@ import {NewExpensePage, PeoplePage, ControlPanel, Header, Footer, BalancePage} f
 const Layout = () => (
   <Flex direction="column" id="app" minH="100vh">
     <Header />
-    <Flex as="main" direction="column" flex={1} py={5}>
+    <Flex as="main" direction="column" flex={1} position="relative" py={5}>
       <Router>
         <ControlPanel path="/" />
         <PeoplePage path="/people" />

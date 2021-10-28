@@ -18,9 +18,6 @@ const contextDefaultValues: PeopleContextState = {
   getPersonById: () => {
     throw new Error("getPersonById not implemented in PeopleContext");
   },
-  modifyById: () => {
-    throw new Error("modifyById not implemented in PeopleContext");
-  },
   divideEqual: () => {
     throw new Error("divideEqual not implemented in PeopleContext");
   },
@@ -39,13 +36,6 @@ const PeopleProvider: FC = ({children}) => {
 
   const removePerson = (id: string) => setPeople((people) => people.filter((p) => p.id !== id));
   const getPersonById = (id: string) => people.find((p) => p.id == id);
-  const modifyById = (ids: string | string[], mods: Partial<PersonT>) => {
-    setPeople((people) =>
-      // Maps through all people and returns the array
-      // with the modified person (or persons) in the same order.
-      people.map((p) => (ids.includes(p.id) ? {...p, ...mods} : p)),
-    );
-  };
 
   const divideEqual = (cost: number, paid_by: string, consumers_ids: string[]) => {
     const share = cost / consumers_ids.length;
@@ -65,7 +55,6 @@ const PeopleProvider: FC = ({children}) => {
       value={{
         people,
         addPerson,
-        modifyById,
         removePerson,
         getPersonById,
         divideEqual,
