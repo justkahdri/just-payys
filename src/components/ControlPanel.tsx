@@ -19,7 +19,7 @@ const ControlPanel = ({location}: ControlPanelProps) => {
         status: "success",
         isClosable: true,
       });
-  }, [location, toast]);
+  }, []);
 
   if (people.length < 2) return <Redirect noThrow to="/people" />;
 

@@ -9,8 +9,8 @@ import {PeopleContext} from "../contexts";
 const Footer = () => {
   const iconSize = 5;
   const {people} = useContext(PeopleContext);
-  const bg = useColorModeValue("primary.500", "gray.800");
-  const selected = useColorModeValue("blackAlpha.800", "primary.400");
+  const bg = useColorModeValue("primary.900", "gray.800");
+  const selected = useColorModeValue("primary.300", "primary.400");
 
   const links = [
     {icon: RiHome2Line, route: "/", title: "Go to control panel"},

@@ -39,13 +39,19 @@ const PeopleProvider: FC = ({children}) => {
 
   const divideEqual = (cost: number, paid_by: string, consumers_ids: string[]) => {
     const share = cost / consumers_ids.length;
+    let newBalance: number;
 
     setPeople((people) =>
       people.map((p) => {
-        if (paid_by === p.id) return {...p, personal_balance: p.personal_balance + cost};
-        else if (consumers_ids?.includes(p.id))
-          return {...p, personal_balance: p.personal_balance - share};
-        else return p;
+        newBalance = 0;
+        if (paid_by === p.id) {
+          newBalance += cost;
+        }
+        if (consumers_ids?.includes(p.id)) {
+          newBalance -= share;
+        }
+
+        return {...p, personal_balance: p.personal_balance + newBalance};
       }),
     );
   };

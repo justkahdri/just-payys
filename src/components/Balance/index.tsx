@@ -1,12 +1,15 @@
 import React, {useContext} from "react";
 import {RouteComponentProps, Redirect} from "@reach/router";
 import {Stack, Text, Flex} from "@chakra-ui/layout";
+import {Stat, StatHelpText, StatLabel, StatNumber, useColorModeValue} from "@chakra-ui/react";
 
 import {ExpensesContext, PeopleContext} from "../../contexts";
 
 const BalancePage = (_: RouteComponentProps) => {
   const {people, getPersonById} = useContext(PeopleContext);
   const {expenses} = useContext(ExpensesContext);
+  const border = useColorModeValue("primary.500", "gray.400");
+  const bg = useColorModeValue("transparent", "gray.800");
 
   if (people.length < 2) return <Redirect noThrow to="/people" />;
 
@@ -32,33 +35,24 @@ const BalancePage = (_: RouteComponentProps) => {
             </Flex>
           ))}
       </Stack>
-      <Stack bottom={2} direction="row" maxW="100vw" overflowX="auto" position="absolute" px={2}>
+      <Stack bottom={2} direction="row" overflowX="auto" position="absolute" px={2} w="100vw">
         {expenses.map((expense) => (
-          <Flex
+          <Stat
             key={expense.id}
+            bg={bg}
             border="solid 1px"
-            borderColor="primary.400"
+            borderColor={border}
             direction="column"
-            px={4}
-            py={1}
+            flex={1}
+            minW="fit-content"
+            px={2}
+            py={0.5}
             rounded="md"
           >
-            <Text as="h5" fontWeight={500}>
-              {expense.description.toUpperCase()}
-            </Text>
-            <Text fontSize="sm">
-              Paid by:
-              <Text as="span" color="secondary.300">
-                {` ${getPersonById(expense.paid_by)?.name}`}
-              </Text>
-            </Text>
-            <Text fontSize="sm">
-              Price:
-              <Text as="span" color="red.400">
-                {` $${expense.cost}`}
-              </Text>
-            </Text>
-          </Flex>
+            <StatLabel>{expense.description}</StatLabel>
+            <StatNumber>${expense.cost.toLocaleString()}</StatNumber>
+            <StatHelpText>Paid by: {getPersonById(expense.paid_by)?.name}</StatHelpText>
+          </Stat>
         ))}
       </Stack>
     </>

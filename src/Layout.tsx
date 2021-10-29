@@ -5,7 +5,7 @@ import {Redirect, Router} from "@reach/router";
 import {NewExpensePage, PeoplePage, ControlPanel, Header, Footer, BalancePage} from "./components";
 
 const Layout = () => (
-  <Flex direction="column" id="app" minH="100vh">
+  <Flex direction="column" id="app" minH="100vh" w="100vw">
     <Header />
     <Flex as="main" direction="column" flex={1} position="relative" py={5}>
       <Router>

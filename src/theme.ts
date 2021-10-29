@@ -13,12 +13,14 @@ const customTheme = extendTheme({
   },
   styles: {
     global: (props: any) => ({
+      html: {
+        boxSizing: "border-box",
+      },
       body: {
         minHeight: "100vh",
         backgroundColor: mode("gray.50", "gray.900")(props),
         padding: {
           base: 0,
-          md: 4,
         },
       },
     }),
